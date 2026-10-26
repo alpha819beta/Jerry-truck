@@ -1,0 +1,13 @@
+{
+  "projects": {
+    "default": "jeremiah-medina"
+  },
+  "targets": {
+    "jeremiah-medina": {
+      "hosting": {
+        "public": ["jeremiah-medina"],
+        "admin": ["jeremiah-medina-admin"]
+      }
+    }
+  }
+}

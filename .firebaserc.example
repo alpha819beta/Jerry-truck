@@ -1,0 +1,13 @@
+{
+  "projects": {
+    "default": "YOUR-PROJECT-ID"
+  },
+  "targets": {
+    "YOUR-PROJECT-ID": {
+      "hosting": {
+        "public": ["YOUR-PROJECT-ID"],
+        "admin": ["YOUR-PROJECT-ID-admin"]
+      }
+    }
+  }
+}

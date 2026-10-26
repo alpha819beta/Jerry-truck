@@ -1,0 +1,115 @@
+rules_version = '2';
+
+// The website has no server, so these rules ARE the security.
+// Owner = a signed-in user whose UID has a document in /admins.
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isOwner() {
+      return request.auth != null
+        && exists(/databases/$(database)/documents/admins/$(request.auth.uid));
+    }
+    function str(v, max) {
+      return v is string && v.size() <= max;
+    }
+    function optStr(data, key, max) {
+      return !(key in data) || data[key] == null || str(data[key], max);
+    }
+
+    // Owner list. Add a doc with your UID in the Firebase console.
+    match /admins/{uid} {
+      allow read: if request.auth != null && request.auth.uid == uid;
+      allow write: if false;
+    }
+
+    // Price list: everyone reads, owner edits.
+    match /materials/{id} {
+      allow read: if true;
+      allow write: if isOwner();
+    }
+
+    // Estimate / booking requests: anyone can submit, only the owner can see them.
+    match /requests/{id} {
+      allow read, update, delete: if isOwner();
+      allow create: if isOwner() || (
+        request.resource.data.keys().hasOnly(
+          ['type', 'status', 'name', 'phone', 'email', 'address', 'preferredDate', 'details', 'items', 'createdAt'])
+        && request.resource.data.type in ['estimate', 'booking']
+        && request.resource.data.status == 'new'
+        && str(request.resource.data.name, 120) && request.resource.data.name.size() > 0
+        && str(request.resource.data.phone, 30)
+        && optStr(request.resource.data, 'email', 200)
+        && optStr(request.resource.data, 'address', 300)
+        && optStr(request.resource.data, 'preferredDate', 10)
+        && optStr(request.resource.data, 'details', 3000)
+        && request.resource.data.items is list && request.resource.data.items.size() <= 30
+        && request.resource.data.createdAt == request.time
+      );
+    }
+
+    // Invoices: the doc ID is a long random token. Customers can open one by
+    // its link (get), but can't list or change them.
+    match /invoices/{token} {
+      allow get: if isOwner() || resource.data.status in ['sent', 'paid'];
+      allow list, write: if isOwner();
+    }
+    match /counters/{id} {
+      allow read, write: if isOwner();
+    }
+
+    // Job photos: small "photos" docs for the grid, full size in "photoFull".
+    match /photos/{id} {
+      allow read: if true;
+      allow write: if isOwner();
+    }
+    match /photoFull/{id} {
+      allow read: if true;
+      allow write: if isOwner();
+    }
+
+    // Reviews: public sees approved ones; anyone can submit (hidden until approved).
+    match /reviews/{id} {
+      allow read: if resource.data.approved == true || isOwner();
+      allow update, delete: if isOwner();
+      allow create: if isOwner() || (
+        request.resource.data.keys().hasOnly(['source', 'author', 'rating', 'text', 'approved', 'createdAt'])
+        && request.resource.data.source == 'site'
+        && request.resource.data.approved == false
+        && str(request.resource.data.author, 80) && request.resource.data.author.size() > 0
+        && str(request.resource.data.text, 2000) && request.resource.data.text.size() >= 5
+        && request.resource.data.rating is int
+        && request.resource.data.rating >= 1 && request.resource.data.rating <= 5
+        && request.resource.data.createdAt == request.time
+      );
+    }
+
+    match /events/{id} {
+      allow read: if true;
+      allow write: if isOwner();
+    }
+
+    // Newsletter subscribers: doc ID is a random token used as the unsubscribe link.
+    match /subscribers/{token} {
+      allow list: if isOwner();
+      allow get: if true;
+      allow delete: if isOwner();
+      allow create: if isOwner() || (
+        request.resource.data.keys().hasOnly(['email', 'name', 'active', 'createdAt'])
+        && str(request.resource.data.email, 200)
+        && request.resource.data.email.matches('^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$')
+        && optStr(request.resource.data, 'name', 120)
+        && request.resource.data.active == true
+        && request.resource.data.createdAt == request.time
+      );
+      // Unsubscribe link: may only switch "active" off.
+      allow update: if isOwner() || (
+        request.resource.data.diff(resource.data).affectedKeys().hasOnly(['active'])
+        && request.resource.data.active == false
+      );
+    }
+
+    match /newsletters/{id} {
+      allow read, write: if isOwner();
+    }
+  }
+}
