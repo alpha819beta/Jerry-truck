@@ -8,7 +8,7 @@ export default function NewsletterPage() {
     <>
       <PageHeader
         title="Newsletter"
-        subtitle="Seasonal specials, delivery availability and upcoming events, straight to your inbox."
+        subtitle="Seasonal specials, delivery availability, and upcoming events straight to your inbox."
       />
       <div className="container-page max-w-xl py-12">
         <div className="card">

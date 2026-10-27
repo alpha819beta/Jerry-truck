@@ -37,7 +37,7 @@ export function EstimateForm() {
       <Honeypot />
       <ContactFields state={state} />
       <div>
-        <label className="label" htmlFor="address">Job location (town or address)</label>
+        <label className="label" htmlFor="address">Location</label>
         <input id="address" name="address" className="input" autoComplete="street-address" maxLength={300} />
       </div>
       <div>

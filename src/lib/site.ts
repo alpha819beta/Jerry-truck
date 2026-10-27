@@ -8,24 +8,24 @@ export const site = {
   smsHref: "sms:+16812200257",
   email: "", // add a public email address here to show it on the site
   facebookUrl: "https://facebook.com/AppalachianAssists",
-  serviceArea: "West Virginia and surrounding areas",
+  serviceArea: "Southern West Virginia",
   hours: "Call or text anytime. We answer as quickly as we can.",
   services: [
     {
       title: "Material Delivery",
-      text: "Gravel, rock, mulch, soil and sand delivered and dumped or tailgated right where you need it.",
+      text: "Gravel, Rock, Mulch, Soil, and Sand dumped or tailgated right where you need it.",
     },
     {
       title: "Hauling",
-      text: "Dump trailer hauling for clean-outs, debris, and the jobs that are too big for the pickup.",
+      text: "Hauling for clean-outs, debris, and the jobs that are too big for the pickup.",
     },
     {
       title: "Landscaping",
-      text: "Driveways, beds, fill and grading help to get your yard looking right.",
+      text: "Driveways, Garden Beds, Walkways, and Decor to help get your yard looking right.",
     },
     {
       title: "Transport",
-      text: "Vehicles, tractors, campers, boats, furniture. If it can be hauled, we can move it.",
+      text: "Vehicles, Tractors, Campers, Boats, or Furniture. If it can be hauled, we can move it.",
     },
   ],
 };

@@ -20,8 +20,8 @@ export default function HomePage() {
               <span className="text-sun">We&apos;ve got you.</span>
             </h1>
             <p className="mt-5 max-w-md text-lg text-cream/80">
-              Gravel, rock, mulch, soil and sand delivered and dumped or tailgated where you need it. Plus hauling
-              and transport for just about anything else.
+              Gravel, rock, mulch, soil, and sand dumped or tailgated wherever you need it. Plus hauling
+              and transportation for just about anything else.
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
               <Link href="/book/" className="btn-primary text-lg">Book Now</Link>
@@ -30,7 +30,7 @@ export default function HomePage() {
               </Link>
             </div>
             <p className="mt-6 text-cream/80">
-              Or call / text{" "}
+              or Call / Text{" "}
               <a href={site.phoneHref} className="font-display text-xl tracking-wider text-cream hover:text-sun">
                 {site.phone}
               </a>

@@ -64,14 +64,14 @@ export function BookingForm() {
           {list.map((m) => {
             const n = qty[m.id] || 0;
             return (
-              <li key={m.id} className={`flex flex-wrap items-center justify-between gap-3 py-3 ${n ? "bg-sun/5" : ""}`}>
-                <div className="min-w-0">
+              <li key={m.id} className={`flex items-center justify-between gap-3 py-3 ${n ? "bg-sun/5" : ""}`}>
+                <div className="min-w-0 flex-1">
                   <p className="font-semibold text-navy">{m.name}</p>
                   <p className="text-sm text-muted">
-                    {money(m.price)} per {m.unit} load{m.description ? ` · ${m.description}` : ""}
+                    {money(m.price)} per {m.unit} Load{m.description ? ` · ${m.description}` : ""}
                   </p>
                 </div>
-                <div className="flex items-center gap-2">
+                <div className="flex shrink-0 items-center gap-1.5">
                   <button type="button" onClick={() => set(m.id, n - 1)} className="h-9 w-9 rounded-lg border border-stone/40 text-lg hover:bg-cream" aria-label={`Fewer ${m.name}`}>−</button>
                   <input
                     type="number"
@@ -79,7 +79,7 @@ export function BookingForm() {
                     max={50}
                     value={n}
                     onChange={(e) => set(m.id, parseInt(e.target.value || "0", 10) || 0)}
-                    className="input w-16 text-center"
+                    className="input w-14 px-1 text-center"
                     aria-label={`Loads of ${m.name}`}
                   />
                   <button type="button" onClick={() => set(m.id, n + 1)} className="h-9 w-9 rounded-lg border border-stone/40 text-lg hover:bg-cream" aria-label={`More ${m.name}`}>+</button>
@@ -123,7 +123,7 @@ export function BookingForm() {
             rows={4}
             maxLength={3000}
             className="input"
-            placeholder="Where should we dump it? Gate codes, tight driveways, dump vs. tailgate (spread)…"
+            placeholder="Where should we dump it? Gate codes, tight driveways, dump vs. tailgate…"
           />
         </div>
         <SubscribeCheckbox />
